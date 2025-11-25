@@ -60,7 +60,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v4
+        uses: gitleaks/gitleaks-action@v3
         with:
           args: detect --source . --report-format sarif --report-path gitleaks.sarif
         continue-on-error: true
