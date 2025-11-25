@@ -21,14 +21,14 @@ jobs:
         run: pip install semgrep
 
       - name: Run Semgrep
-        run: semgrep --config auto --json --output sast.json || true
+        run: semgrep --config auto --html --output sast.html || true
 
       - name: Upload HTML (Semgrep)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sast-report
-          path: sast.json
+          path: sast.html
 
   sca:
     name: SCA – Trivy
@@ -40,18 +40,18 @@ jobs:
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
-          format: html
-          output: sca.html
+          format: json
+          output: sca.json
           ignore-unfixed: true
           severity: CRITICAL,HIGH
         continue-on-error: true
 
-      - name: Upload HTML (Trivy)
+      - name: Upload JSON (Trivy)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sca-report
-          path: sca.html
+          path: sca.json
 
   secret_scan:
     name: Secret Scanning - Gitleaks
