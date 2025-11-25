@@ -26,7 +26,7 @@ The analyzed application is a simple Web API built with **Flask** (Python). It w
 
 ## 3\. Actions Performed (CI Pipeline)
 
-We implemented a Continuous Integration (CI) pipeline defined in `.github/workflows/security.yml`. This workflow triggers automatically on every `push` and `pull_request` targeting the `main` branch.
+We implemented a Continuous Integration (CI) pipeline defined in `.github/workflows/security.yml`. This workflow triggers automatically on every `push` and `pull_request` targeting the `main` branch. If it fails, **the push/merge will be rejected** by github.
 
 The pipeline orchestrates three distinct security scanning jobs:
 
