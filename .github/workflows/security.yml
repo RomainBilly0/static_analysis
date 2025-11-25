@@ -26,7 +26,7 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: sast.sarif
+          sarif_file: semgrep.sarif
 
   sca:
     name: SCA – Dependency Scan (Trivy)
@@ -48,7 +48,7 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: sca.sarif
+          sarif_file: trivy.sarif
 
   secretscan:
     name: Secret Scan – Gitleaks
@@ -66,4 +66,4 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: secretscan.sarif
+          sarif_file: gitleaks.sarif
