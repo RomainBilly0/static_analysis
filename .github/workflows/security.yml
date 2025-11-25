@@ -21,14 +21,14 @@ jobs:
         run: pip install semgrep
 
       - name: Run Semgrep
-        run: semgrep --config auto --html --output sast.html || true
+        run: semgrep --config auto --json --output sast.json || true
 
-      - name: Upload HTML (Semgrep)
+      - name: Upload JSON (Semgrep)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sast-report
-          path: sast.html
+          path: sast.json
 
   sca:
     name: SCA – Trivy
