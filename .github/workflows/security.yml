@@ -21,16 +21,17 @@ jobs:
         run: pip install semgrep
 
       - name: Run Semgrep
-        run: semgrep --config auto --sarif --output semgrep.sarif || true
+        run: semgrep --config auto --html --output sast.html || true
 
-      - name: Upload SARIF (Semgrep)
+      - name: Upload HTML (Semgrep)
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: actions/upload-artifact@v4
         with:
-          sarif_file: semgrep.sarif
+          name: sast-report
+          path: sast.html
 
   sca:
-    name: SCA – Dependency Scan (Trivy)
+    name: SCA – Trivy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,19 +40,21 @@ jobs:
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
-          format: sarif
-          output: trivy.sarif
+          format: html
+          output: sca.html
           ignore-unfixed: true
           severity: CRITICAL,HIGH
         continue-on-error: true
 
-      - name: Upload SARIF (Trivy)
+      - name: Upload HTML (Trivy)
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: actions/upload-artifact@v4
         with:
-          sarif_file: trivy.sarif
+          name: sca-report
+          path: sca.html
 
   secret_scan:
+    name: Secret Scanning - Gitleaks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -59,11 +62,11 @@ jobs:
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
         with:
-          args: detect --source . --report-format sarif --report-path gitleaks.sarif
+          args: detect --source . --report-format html --report-path secrets.html
         continue-on-error: true
 
       - name: Upload HTML (Gitleaks)
         uses: actions/upload-artifact@v4
         with:
-          name: gitleaks-report
-          path: gitleaks.html
+          name: secrets-report
+          path: secrets.html
