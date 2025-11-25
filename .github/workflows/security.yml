@@ -21,7 +21,7 @@ jobs:
         run: pip install semgrep
 
       - name: Run Semgrep
-        run: semgrep --config auto --json --output sast.json || true
+        run: semgrep --config auto --json --output sast.json
 
       - name: Upload JSON (Semgrep)
         if: always()
@@ -44,7 +44,6 @@ jobs:
           output: sca.json
           ignore-unfixed: true
           severity: CRITICAL,HIGH
-        continue-on-error: true
 
       - name: Upload JSON (Trivy)
         if: always()
@@ -63,7 +62,6 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         with:
           args: detect --source . --report-format html --report-path secrets.html
-        continue-on-error: true
 
       - name: Upload HTML (Gitleaks)
         uses: actions/upload-artifact@v4
