@@ -20,7 +20,7 @@ jobs:
       - name: Install Semgrep
         run: pip install semgrep
 
-      - name: Run Semgrep (SAST)
+      - name: Run Semgrep
         run: semgrep --config auto --sarif --output semgrep.sarif || true
 
       - name: Upload SARIF (Semgrep)
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Trivy on requirements.txt
+      - name: Run Trivy
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
@@ -51,13 +51,10 @@ jobs:
         with:
           sarif_file: trivy.sarif
 
-  secretscan:
-    name: Secret Scan – Gitleaks
+  secret_scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
@@ -65,7 +62,7 @@ jobs:
           args: detect --source . --report-format sarif --report-path gitleaks.sarif
         continue-on-error: true
 
-      - name: Upload SARIF
+      - name: Upload SARIF (Gitleaks)
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
