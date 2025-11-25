@@ -62,8 +62,8 @@ jobs:
           args: detect --source . --report-format sarif --report-path gitleaks.sarif
         continue-on-error: true
 
-      - name: Upload SARIF (Gitleaks)
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload HTML (Gitleaks)
+        uses: actions/upload-artifact@v4
         with:
-          sarif_file: gitleaks.sarif
+          name: gitleaks-report
+          path: gitleaks.html
