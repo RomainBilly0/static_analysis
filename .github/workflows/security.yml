@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Trivy on requirements.txt
-        uses: aquasecurity/trivy-action@v2
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           format: sarif
@@ -56,14 +56,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: zricethezav/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v2
         with:
           args: detect --source . --report-format sarif --report-path gitleaks.sarif
         continue-on-error: true
 
-      - name: Upload SARIF (Gitleaks)
+      - name: Upload SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
